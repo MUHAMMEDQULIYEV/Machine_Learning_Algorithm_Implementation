@@ -7,11 +7,13 @@ class LinearRegression:
         self.bias=None
         self.learning_rate=learning_rate
         self.iterations=iterations
+        self.intercept_=None
+        self.coef_=None
     def gradient(self,X,y,y_predicted):
         m=len(y_predicted)
         self.dW=np.dot(X.T,(y_predicted-y))/m
         self.db=np.sum(y_predicted-y)/m
-        pass
+        
 
     def error_func(self,y_predicted,y):
         m=len(y_predicted)
@@ -30,6 +32,9 @@ class LinearRegression:
           self.gradient(x_converted,y_converted,y_predicted)
           self.weights=self.weights-(self.dW*self.learning_rate)
           self.bias=self.bias-(self.db*self.learning_rate)
+        self.coef_=self.weights
+        self.intercept_=self.bias
+
 
     def save_model(self,filename=None):
 
@@ -57,3 +62,21 @@ class LinearRegression:
     def score(self):
         pass
 
+class LassoRegression(LinearRegression):
+    def __init__(self,learning_rate=0.01,iterations=1000,alpha=0.1):
+        super().__init__(learning_rate,iterations)
+        self.alpha=alpha
+        def _penalty_graident(self):
+            return self.alpha*np.sign(self.weights)
+        def _penalty_cost(self):
+            return self.alpha*np.sum(np.abs(self.weights))
+    
+
+class RidgeRegression(LinearRegression):
+    def __init__(self,learning_rate=0.01,iterations=1000,alpha=0.1):
+        super().__init__(learning_rate,iterations)
+        self.alpha=alpha
+    def _penalty_graident(self):
+        return self.alpha*self.weights
+    def _penalty_cost(self):
+        return (self.alpha/2)*np.sum(self.weights**2)

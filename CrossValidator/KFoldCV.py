@@ -1,6 +1,6 @@
 import numpy as np
-from sklearn.metrics import accuracy_score
-
+from sklearn.metrics import accuracy_score,confusion_matrix
+import matplotlib.pyplot as plt 
 class KFoldCV:
     def __init__(self,model,X,y,k=5):
         self.model=model
@@ -15,7 +15,7 @@ class KFoldCV:
         fold_size=len(self.X)//self.k
         fold=[indicies[i*fold_size:(i+1)*fold_size] for i in range(self.k)]
         return folds
-    def validate(self):
+    def cross_validate(self):
         fold=self.splits_data()
         for i in range(self.k):
          validation_indicies=folds[i]
@@ -28,6 +28,36 @@ class KFoldCV:
          score=accuracy_score(y_val,predictions)
          self.scores.append(score)
          print(f"Fold {i+1}: Accuracy = {score:.4f}")
+         
+         conf_matrix=
+
+
+
+
+        average_score=np.mean(self.scores)
+        print(f"\nAverage Accuracy across {self.k} folds: {average_score:.4f}")
+        return average_score 
+
+
+
+    def plot_folds(X,y,folds):
+        colors = ['red', 'blue', 'green', 'orange', 'purple']
+
+
+        for i,fold in enumerate(folds):
+            X_fold=X[fold]
+            plt.scatter(X_fold[:,0],X_fold[:,1],color=colors[i],label=f"Fold {i+1}")
+
+        plt.xlabel("Feature 1")
+        plt.ylabel("Feature 2")
+        plt.title("Visualization of K-Folds")
+        plt.legend()
+        plt.show()
+    
+
+        
+    
+        
 
 
     
